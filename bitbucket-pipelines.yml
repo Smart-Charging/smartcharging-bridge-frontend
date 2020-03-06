@@ -1,0 +1,27 @@
+image: node:10.15.3
+
+pipelines:
+  branches:
+    master:
+      - step:
+          # caches:
+          #   - node
+          script:
+            - npm config set unsafe-perm true
+            - npm install
+            - ls node_modules/scn-bridge
+            - cp src/config/config.example.ts src/config/config.ts
+            - npm run build
+            - npm test
+            - ssh $HOST 'bash -s' < ./setup.sh
+  default:
+    - step:
+          # caches:
+          #   - node
+          script:
+            - npm config set unsafe-perm true
+            - npm install
+            - ls node_modules/scn-bridge
+            - cp src/config/config.example.ts src/config/config.ts
+            - npm run build
+            - npm test
